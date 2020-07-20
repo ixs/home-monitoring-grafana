@@ -31,13 +31,37 @@ services:
       - 3000:3000
     volumes:
       - ${DATA_DIR}/grafana:/var/lib/grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
     restart: always
 
-  mqttbridge:
-    build: ./02-bridge
-    image: nilhcem/mqttbridge
-    container_name: mqttbridge
+  telegraf:
+    image: telegraf:1.14
+    container_name: telegraf
+    volumes:
+      - ./03-telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
     depends_on:
       - mosquitto
       - influxdb
     restart: always
+
+  pylarexx:
+    build: ./04-pylarexx
+    image: ixs/pylarexx
+    container_name: pylarexx
+    privileged: true
+    volumes:
+      - ./04-pylarexx/pylarexx.yaml:/app/pylarexx.yaml
+      - /dev/bus/usb:/dev/bus/usb
+    depends_on:
+      - influxdb
+    restart: always
+
+  knxbridge:
+    build: ./02-knxbridge
+    image: ixs/knxbridge
+    container_name: knxbridge
+    depends_on:
+      - influxdb
+    restart: always
+    network_mode: host
