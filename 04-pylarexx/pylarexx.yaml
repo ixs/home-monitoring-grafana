@@ -1,0 +1,35 @@
+sensors:
+  - id: 66064
+    name: Windfang (4)
+  - id: 66022
+    name: Schlafraum (1)
+  - id: 65746
+    name: Wohnraum, Essgruppe (7)
+  - id: 65745
+    name: Bad (2)
+  - id: 65701
+    name: Wohnraum, Essgruppe (6)
+  - id: 65699
+    name: Küche (5)
+  - id: 65551
+    name: Gästeraum (3)
+  - id: 131722
+    name: Kaminraum (9)
+  - id: 131680
+    name: Mischventil Vorlauf (10)
+  - id: 131663
+    name: Wohnraum Terasse (8)
+  - id: 131893
+    name: Mischventil Rücklauf (11)
+calibration: []
+output:
+  - type: LoggingListener
+  - type: InfluxDBListener
+    params:
+        host: 192.168.1.168
+        port: 8086
+        user: root
+        password: root
+        dbname: home_db
+config:
+    DetectUnknownSensors: no
